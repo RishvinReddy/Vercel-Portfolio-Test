@@ -90,31 +90,8 @@ export function Footer() {
         </svg>
       </button>
 
-      <section className="bg-slate-900 relative pt-8 pb-8 overflow-hidden border-t border-slate-800/50">
-        <div className="mt-4 overflow-hidden relative w-full reveal">
-          <div className="absolute inset-y-0 left-0 w-24 sm:w-32 bg-gradient-to-r from-slate-950 to-transparent z-10 pointer-events-none"></div>
-          <div className="absolute inset-y-0 right-0 w-24 sm:w-32 bg-gradient-to-l from-slate-950 to-transparent z-10 pointer-events-none"></div>
 
-          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] text-center mb-6">Expertise & Technologies</p>
 
-          <div className="flex whitespace-nowrap overflow-hidden">
-            <div className="flex items-center gap-12 sm:gap-20 min-w-max px-6" style={{ animation: "marquee 40s linear infinite" }}>
-              {[...Array(2)].map((_, i) => (
-                <React.Fragment key={i}>
-                  <span className="text-2xl sm:text-3xl font-bold text-slate-800 hover:text-slate-600 transition-colors cursor-default">Python</span>
-                  <span className="text-2xl sm:text-3xl font-bold text-slate-800 hover:text-slate-600 transition-colors cursor-default">React.js</span>
-                  <span className="text-2xl sm:text-3xl font-bold text-slate-800 hover:text-slate-600 transition-colors cursor-default">Node.js</span>
-                  <span className="text-2xl sm:text-3xl font-bold text-slate-800 hover:text-slate-600 transition-colors cursor-default">AWS</span>
-                  <span className="text-2xl sm:text-3xl font-bold text-slate-800 hover:text-slate-600 transition-colors cursor-default">Docker</span>
-                  <span className="text-2xl sm:text-3xl font-bold text-slate-800 hover:text-slate-600 transition-colors cursor-default">TypeScript</span>
-                  <span className="text-2xl sm:text-3xl font-bold text-slate-800 hover:text-slate-600 transition-colors cursor-default">Solidity</span>
-                  <span className="text-2xl sm:text-3xl font-bold text-slate-800 hover:text-slate-600 transition-colors cursor-default">MongoDB</span>
-                </React.Fragment>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       <footer className="bg-slate-900 border-t border-slate-800/60 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
