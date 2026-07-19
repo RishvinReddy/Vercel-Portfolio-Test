@@ -31,11 +31,14 @@ export default async function Home() {
     {/*  ===== Hero / Home Section (Editorial Engineering Luxury) =====  */}
     <div className="mx-auto max-w-[1450px] px-5 sm:px-6 lg:px-8 overflow-x-hidden flex-grow flex items-center min-h-[calc(100svh-100px)] pt-[clamp(24px,4vh,56px)] pb-[clamp(32px,5vh,72px)]">
       <section id="home" className="relative w-full">
-        
-        {/* Subtle Background Radial Gradient */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-stone-50 via-white to-slate-50 opacity-60 -z-10 rounded-[3rem]"></div>
 
-        <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-8 lg:gap-[clamp(30px,4vw,60px)] items-center relative z-10 w-full">
+        {/* ── Hero Card ── */}
+        <div className="relative w-full rounded-[2rem] border border-slate-200/80 bg-white shadow-lg shadow-slate-200/60 overflow-hidden px-8 sm:px-10 lg:px-14 py-10 lg:py-14">
+
+          {/* Subtle radial gradient inside card */}
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-stone-50/80 via-white to-slate-50/60 -z-0 rounded-[2rem]"></div>
+
+          <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-8 lg:gap-[clamp(30px,4vw,60px)] items-center relative z-10 w-full">
           
           {/*  Left: Hero Text */}
           <div className="flex flex-col justify-center max-w-3xl mx-auto lg:mx-0 order-2 lg:order-1 text-center lg:text-left">
@@ -202,7 +205,8 @@ export default async function Home() {
             </div>
           </div>
 
-        </div>
+        </div>{/* end grid */}
+        </div>{/* end hero card */}
       </section>
 
   {/*  ===== Fullscreen image modal (accessible, focus-trap) =====  */}
