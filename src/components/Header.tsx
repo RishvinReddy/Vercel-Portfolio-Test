@@ -137,7 +137,7 @@ export function Header() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/*  The nav pill itself  */}
         <div id="mainNav"
-          className={`mx-auto max-w-[1100px] rounded-full px-4 py-2 flex items-center justify-between transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md border border-slate-200/60 shadow-sm' : 'bg-transparent border border-transparent'}`}>
+          className={`mx-auto max-w-[1100px] rounded-full px-4 py-2 flex items-center justify-between transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md border border-slate-200/60 shadow-md' : 'bg-transparent border border-transparent'}`}>
 
           {/*  ── Logo / Avatar (clean premium style) ──  */}
           <Link className="flex items-center gap-3 group shrink-0" href="/">
@@ -150,7 +150,7 @@ export function Header() {
               </div>
               {/*  Tiny online indicator dot  */}
               <span
-                className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full shadow-sm"></span>
+                className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full shadow-md"></span>
             </div>
             <div className="flex flex-col leading-none gap-0.5">
               <span
@@ -227,7 +227,7 @@ export function Header() {
 
               {/*  Mega dropdown panel  */}
               <div
-                className="absolute right-0 top-full mt-3 w-64 origin-top-right bg-white/97 backdrop-blur-2xl rounded-2xl shadow-2xl shadow-slate-300/20 border border-slate-100/80 p-2 invisible opacity-0 translate-y-2 scale-95 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 group-hover:scale-100 transition-all duration-250">
+                className="absolute right-0 top-full mt-3 w-64 origin-top-right bg-white/97 backdrop-blur-2xl rounded-2xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] shadow-slate-300/20 border border-slate-100/80 p-2 invisible opacity-0 translate-y-2 scale-95 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 group-hover:scale-100 transition-all duration-250">
                 {/*  Header label  */}
                 <p className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">
                   Don&apos;t see what you need?</p>
@@ -357,7 +357,7 @@ export function Header() {
 
       {/*  ── Mobile Menu (staggered entrance) ──  */}
       <div id="mobileMenu"
-        className={`absolute top-full left-3 right-3 mt-2 p-4 bg-white/97 backdrop-blur-2xl rounded-3xl shadow-2xl shadow-slate-300/20 border border-white/40 flex flex-col gap-1 origin-top transition-all duration-300 ${menuOpen ? 'opacity-100 visible scale-100 translate-y-0' : 'opacity-0 invisible scale-95'}`}>
+        className={`absolute top-full left-3 right-3 mt-2 p-4 bg-white/97 backdrop-blur-2xl rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] shadow-slate-300/20 border border-white/40 flex flex-col gap-1 origin-top transition-all duration-300 ${menuOpen ? 'opacity-100 visible scale-100 translate-y-0' : 'opacity-0 invisible scale-95'}`}>
 
         <p className="px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">
           Navigate</p>
@@ -503,7 +503,7 @@ export function Header() {
 
         <div className="border-t border-slate-100 mt-1.5 pt-2">
           <Link href="/contact"
-            className="flex items-center justify-center gap-2 w-full py-3 text-sm font-bold text-white bg-gradient-to-r from-primary to-rose-500 rounded-2xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 hover:scale-[1.02] transition-all duration-200 relative overflow-hidden group">
+            className="flex items-center justify-center gap-2 w-full py-3 text-sm font-bold text-white bg-gradient-to-r from-primary to-rose-500 rounded-2xl shadow-xl shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 hover:scale-[1.02] transition-all duration-200 relative overflow-hidden group">
             <span
               className="absolute inset-0 -translate-x-full skew-x-12 bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-full transition-transform duration-700 ease-out"></span>
             <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>

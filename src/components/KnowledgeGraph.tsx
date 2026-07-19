@@ -283,17 +283,17 @@ export default function KnowledgeGraph({ repos }: { repos: any[] }) {
   return (
     <div className="flex flex-col lg:flex-row gap-6 relative">
       {/* Network Canvas Container */}
-      <div className="flex-1 bg-white rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden h-[600px] lg:h-[700px]">
+      <div className="flex-1 bg-white rounded-3xl border border-slate-200 shadow-md relative overflow-hidden h-[600px] lg:h-[700px]">
         {/* Network HUD Overlay */}
         <div className="absolute top-4 left-4 z-10 pointer-events-none flex flex-col gap-2">
-          <div className="bg-slate-900/90 backdrop-blur-sm border border-slate-700 rounded-xl px-4 py-2.5 shadow-lg flex items-center gap-3">
+          <div className="bg-slate-900/90 backdrop-blur-sm border border-slate-700 rounded-xl px-4 py-2.5 shadow-xl flex items-center gap-3">
             <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></div>
             <div>
               <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Nodes</p>
               <p className="text-sm font-black text-white">{repos?.length ? repos.filter(r => !r.fork).length + 1 : '...'}</p>
             </div>
           </div>
-          <div className="bg-white/90 backdrop-blur-sm border border-slate-200 rounded-xl px-4 py-2.5 shadow-sm flex items-center gap-3">
+          <div className="bg-white/90 backdrop-blur-sm border border-slate-200 rounded-xl px-4 py-2.5 shadow-md flex items-center gap-3">
             <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
             <div>
               <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Physics Engine</p>
@@ -307,7 +307,7 @@ export default function KnowledgeGraph({ repos }: { repos: any[] }) {
 
         {/* Legend */}
         <div className="absolute bottom-4 left-4 right-4 z-10 pointer-events-none">
-          <div className="bg-white/95 backdrop-blur-md border border-slate-200 rounded-2xl p-4 shadow-xl flex flex-wrap items-center justify-center gap-4 sm:gap-6 mx-auto w-fit">
+          <div className="bg-white/95 backdrop-blur-md border border-slate-200 rounded-2xl p-4 shadow-2xl flex flex-wrap items-center justify-center gap-4 sm:gap-6 mx-auto w-fit">
             <div className="flex items-center gap-2">
               <span className="w-3 h-3 rounded-full bg-slate-800 border-2 border-[#10b981]"></span>
               <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Project Node</span>
@@ -325,7 +325,7 @@ export default function KnowledgeGraph({ repos }: { repos: any[] }) {
       </div>
 
       {/* Details Side Panel */}
-      <div className={`w-full lg:w-96 bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl flex flex-col h-[400px] lg:h-[700px] transition-all duration-300 ${selectedNodeData ? 'opacity-100 scale-100' : 'opacity-50 grayscale'}`}>
+      <div className={`w-full lg:w-96 bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] flex flex-col h-[400px] lg:h-[700px] transition-all duration-300 ${selectedNodeData ? 'opacity-100 scale-100' : 'opacity-50 grayscale'}`}>
         <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-800">
           <h3 className="text-white font-bold tracking-wide flex items-center gap-2">
             <svg className="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>

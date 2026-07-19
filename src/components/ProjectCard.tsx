@@ -92,7 +92,7 @@ async function postProcessReadme(
       try {
         const { svg } = await mermaid.render(id, code);
         const wrapper = document.createElement("div");
-        wrapper.className = "my-5 p-4 bg-white border border-slate-200 rounded-xl overflow-x-auto shadow-sm mermaid-rendered";
+        wrapper.className = "my-5 p-4 bg-white border border-slate-200 rounded-xl overflow-x-auto shadow-md mermaid-rendered";
         wrapper.innerHTML = svg;
         const toReplace = block.closest("pre") || block;
         toReplace.replaceWith(wrapper);
@@ -118,7 +118,7 @@ async function postProcessReadme(
         try {
           const { svg } = await mermaid.render(id, code);
           const wrapper = document.createElement("div");
-          wrapper.className = "p-4 bg-white border border-slate-200 rounded-xl overflow-x-auto shadow-sm";
+          wrapper.className = "p-4 bg-white border border-slate-200 rounded-xl overflow-x-auto shadow-md";
           wrapper.innerHTML = svg;
           section.appendChild(wrapper);
         } catch (err) {
@@ -161,7 +161,7 @@ async function postProcessReadme(
       }
 
       const iframeWrap = document.createElement("div");
-      iframeWrap.className = "rounded-xl overflow-hidden border border-slate-200 shadow-sm";
+      iframeWrap.className = "rounded-xl overflow-hidden border border-slate-200 shadow-md";
       const iframe = document.createElement("iframe");
       iframe.src = embedUrl;
       iframe.width = "100%";
@@ -194,7 +194,7 @@ async function postProcessReadme(
       seen2.add(src);
 
       const iframeWrap2 = document.createElement("div");
-      iframeWrap2.className = "rounded-xl overflow-hidden border border-slate-200 shadow-sm";
+      iframeWrap2.className = "rounded-xl overflow-hidden border border-slate-200 shadow-md";
       const iframe2 = document.createElement("iframe");
       iframe2.src = src;
       iframe2.width = "100%";
@@ -282,7 +282,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
     <>
       {/* ─── Card ─── */}
       <div
-        className="group flex flex-col bg-white rounded-2xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+        className="group flex flex-col bg-white rounded-2xl overflow-hidden border border-slate-200/80 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer"
         onClick={() => setOpen(true)}
         role="button"
         tabIndex={0}
@@ -401,7 +401,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
           <div className="absolute inset-0 bg-slate-900/70 backdrop-blur-sm" onClick={() => setOpen(false)} />
 
           {/* Panel */}
-          <div className="relative z-10 w-full max-w-5xl max-h-[92vh] flex flex-col bg-white rounded-3xl shadow-2xl overflow-hidden mt-4">
+          <div className="relative z-10 w-full max-w-5xl max-h-[92vh] flex flex-col bg-white rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] overflow-hidden mt-4">
 
             {/* Modal Header */}
             <div className="bg-[#0d1117] px-6 sm:px-8 py-5 flex items-center gap-4 shrink-0">
