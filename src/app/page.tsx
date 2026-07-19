@@ -5,6 +5,7 @@ import { TECH_STACK, SERVICES, FEATURED_PROJECTS } from '../data/portfolio';
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import ProfileModalController from '@/components/ProfileModalController';
 
 export default async function Home() {
   const dynamicProjects = await getGithubProjects();
@@ -13,6 +14,7 @@ export default async function Home() {
 
   return (
     <>
+      <ProfileModalController />
       {/*  ── Header v2 Scripts ──  */}
     
 
