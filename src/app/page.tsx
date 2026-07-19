@@ -29,7 +29,7 @@ export default async function Home() {
     <div className="noise-overlay pointer-events-none fixed inset-0 z-[9999] opacity-[0.03]"></div>
 
     {/*  ===== Hero / Home Section (Editorial Engineering Luxury) =====  */}
-    <div className="mx-auto max-w-[1450px] px-5 sm:px-6 lg:px-8 overflow-x-hidden flex-grow flex items-center min-h-[calc(100svh-100px)] pt-[clamp(24px,4vh,56px)] pb-[clamp(32px,5vh,72px)]">
+    <div className="mx-auto w-full max-w-screen-2xl px-4 sm:px-6 lg:px-8 overflow-x-hidden flex-grow flex items-center min-h-[calc(100svh-100px)] pt-[clamp(20px,3vh,48px)] pb-[clamp(24px,4vh,60px)]">
       <section id="home" className="relative w-full">
 
         {/* ── Hero Card ── */}
