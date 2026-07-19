@@ -1427,202 +1427,158 @@ export default async function Home() {
   </div>
 
 
-  {/*  WHY CHOOSE ME — Premium Feature Grid  */}
-  <section className="relative pt-12 pb-12 sm:pt-16 sm:pb-16 bg-background-dark overflow-hidden">
-    {/*  Decorative background blobs  */}
-    <div
-      className="absolute -left-56 -top-40 w-[640px] h-[640px] rounded-full bg-gradient-to-br from-primary/10 to-transparent blur-3xl pointer-events-none opacity-60">
-    </div>
-    <div
-      className="absolute -right-40 -bottom-28 w-[560px] h-[560px] rounded-full bg-gradient-to-tr from-indigo-500/10 to-transparent blur-2xl pointer-events-none opacity-50">
-    </div>
+  {/*  WHY CHOOSE ME — Premium Redesign  */}
+  <section className="relative py-20 sm:py-28 bg-white overflow-hidden">
 
-    <div className="container mx-auto px-6 lg:px-20 relative z-10">
-      {/*  Header  */}
-      {/*  Section Header  */}
-      <div className="mx-auto max-w-3xl flex flex-col items-center text-center mb-20 scroll-reveal">
-        {/*  Badge  */}
-        <div className="mb-6 flex items-center justify-center gap-3 w-full">
-          <div className="flex-1 h-px bg-gradient-to-l from-indigo-500/40 to-transparent max-w-[120px]"></div>
-          <span
-            className="inline-flex items-center gap-2 px-4 py-2 text-[11px] font-black uppercase tracking-widest text-indigo-300 bg-indigo-500/10 border border-indigo-500/30 rounded-full shadow-sm">
-            <span className="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-pulse"></span>
+    {/* Subtle top border accent */}
+    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+
+    <div className="mx-auto max-w-screen-xl px-6 lg:px-12 relative z-10">
+
+      {/* Two-Column Header */}
+      <div className="grid lg:grid-cols-[1fr_1.8fr] gap-16 items-start mb-20">
+
+        {/* Left — sticky headline */}
+        <div className="lg:sticky lg:top-28">
+          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-black uppercase tracking-widest mb-6">
+            <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-pulse" />
             Engineering Philosophy
           </span>
-          <div className="flex-1 h-px bg-gradient-to-r from-indigo-500/40 to-transparent max-w-[120px]"></div>
-        </div>
-        {/*  Headline  */}
-        <h2 className="text-5xl md:text-6xl font-black tracking-tight text-slate-900 mb-6 font-display leading-[1.05]">
-          Why Choose<br className="sm:hidden" />
-          <span className="relative inline-block mt-2 sm:mt-0">
-            <span className="text-transparent bg-clip-text"
-              style={{ backgroundImage: "linear-gradient(120deg, #818cf8 0%, #38bdf8 100%)" }}>
-              Me?
-            </span>
-            {/*  Underline accent  */}
-            <span className="absolute -bottom-1 left-0 right-0 h-[3px] rounded-full opacity-40"
-              style={{ background: "linear-gradient(90deg, #818cf8, #38bdf8)" }}></span>
-          </span>
-        </h2>
-        <p className="text-lg md:text-xl text-slate-400 leading-relaxed font-medium max-w-2xl">
-          Bridging the gap between hardware, software, and security. I bring a holistic, product-first mindset to every
-          engineering challenge.
-        </p>
-      </div>
-
-      {/*  Features Grid  */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
-        {/*  Feature 1  */}
-        <div
-          className="group bg-white/80 backdrop-blur-sm border border-white/40 p-8 rounded-3xl premium-layered-shadow hover:-translate-y-1 transition-all duration-300">
-          <div
-            className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-6 group-hover:scale-110 transition-transform duration-300">
-            <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M12 12a4 4 0 100-8 4 4 0 000 8z" strokeWidth="2" strokeLinecap="round"
-                strokeLinejoin="round" />
-              <path d="M4 20a8 8 0 0116 0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+          <h2 className="text-5xl sm:text-6xl font-black text-slate-900 leading-[1.05] tracking-tight mb-6">
+            Why<br />
+            <span className="text-transparent bg-clip-text" style={{ backgroundImage: "linear-gradient(120deg, #6366f1 0%, #38bdf8 100%)" }}>
+              Choose
+            </span><br />
+            Me?
+          </h2>
+          <p className="text-slate-500 text-lg leading-relaxed mb-10 max-w-xs">
+            Bridging hardware, software, and security with a holistic, product-first mindset.
+          </p>
+          <div className="flex flex-col gap-3">
+            <a href="#contact"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-slate-900 text-white text-sm font-bold hover:bg-slate-700 hover:-translate-y-0.5 transition-all duration-200 shadow-lg shadow-slate-900/20">
+              Work with me
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+            <a href="/resumes/SoftwareEngineering _ FullStack Resume/Software_Engineering_Full_Stack_Resume.pdf" target="_blank"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl border border-slate-200 text-slate-700 text-sm font-semibold hover:bg-slate-50 hover:border-slate-300 transition-all duration-200">
+              Download Resume
+            </a>
           </div>
-          <h3 className="text-xl font-bold text-slate-900 mb-3">User-Centric Design</h3>
-          <p className="text-slate-600 leading-relaxed">Research-led UX and accessibility-first
-            components to ensure
-            adoption and delight.</p>
         </div>
 
-        {/*  Feature 2  */}
-        <div
-          className="group bg-white/80 backdrop-blur-sm border border-white/40 p-8 rounded-3xl premium-layered-shadow hover:-translate-y-1 transition-all duration-300">
-          <div
-            className="w-14 h-14 bg-indigo-500/10 rounded-2xl flex items-center justify-center text-indigo-600 mb-6 group-hover:scale-110 transition-transform duration-300">
-            <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M12 2l7 3v5c0 5-3.58 9.74-7 11-3.42-1.26-7-6-7-11V5l7-3z" strokeWidth="2" />
-            </svg>
-          </div>
-          <h3 className="text-xl font-bold text-slate-900 mb-3">Security-First Mindset</h3>
-          <p className="text-slate-600 leading-relaxed">Secure authentication, encryption and
-            threat-aware architecture
-            baked in from day one.</p>
-        </div>
+        {/* Right — 2x3 Feature Cards */}
+        <div className="grid sm:grid-cols-2 gap-5">
 
-        {/*  Feature 3  */}
-        <div
-          className="group bg-white/80 backdrop-blur-sm border border-white/40 p-8 rounded-3xl premium-layered-shadow hover:-translate-y-1 transition-all duration-300">
-          <div
-            className="w-14 h-14 bg-purple-500/10 rounded-2xl flex items-center justify-center text-purple-600 mb-6 group-hover:scale-110 transition-transform duration-300">
-            <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <rect x="3" y="3" width="7" height="7" rx="1.5" strokeWidth="2" />
-              <rect x="14" y="3" width="7" height="7" rx="1.5" strokeWidth="2" />
-              <rect x="3" y="14" width="7" height="7" rx="1.5" strokeWidth="2" />
-              <rect x="14" y="14" width="7" height="7" rx="1.5" strokeWidth="2" />
-            </svg>
+          <div className="group relative bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden p-6">
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-400 to-sky-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="w-11 h-11 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600 mb-5 group-hover:scale-110 transition-transform duration-300">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 12a4 4 0 100-8 4 4 0 000 8z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M4 20a8 8 0 0116 0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+            <h3 className="text-base font-bold text-slate-900 mb-2">User-Centric Design</h3>
+            <p className="text-slate-500 text-sm leading-relaxed">Research-led UX and accessibility-first components to ensure adoption and delight.</p>
           </div>
-          <h3 className="text-xl font-bold text-slate-900 mb-3">Product Engineering</h3>
-          <p className="text-slate-600 leading-relaxed">Buildable, observable, and cost-effective
-            solutions engineered for
-            real teams.</p>
-        </div>
 
-        {/*  Feature 4  */}
-        <div
-          className="group bg-white/80 backdrop-blur-sm border border-white/40 p-8 rounded-3xl premium-layered-shadow hover:-translate-y-1 transition-all duration-300">
-          <div
-            className="w-14 h-14 bg-green-500/10 rounded-2xl flex items-center justify-center text-green-600 mb-6 group-hover:scale-110 transition-transform duration-300">
-            <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M3 3v18h18" strokeWidth="2" />
-              <path d="M7 14v-4M12 14v-8M17 14v-2" strokeWidth="2" />
-            </svg>
+          <div className="group relative bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden p-6">
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-emerald-400 to-teal-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="w-11 h-11 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 mb-5 group-hover:scale-110 transition-transform duration-300">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 2l7 3v5c0 5-3.58 9.74-7 11-3.42-1.26-7-6-7-11V5l7-3z" strokeWidth="2" />
+              </svg>
+            </div>
+            <h3 className="text-base font-bold text-slate-900 mb-2">Security-First Mindset</h3>
+            <p className="text-slate-500 text-sm leading-relaxed">Secure authentication, encryption, and threat-aware architecture baked in from day one.</p>
           </div>
-          <h3 className="text-xl font-bold text-slate-900 mb-3">Data-Driven Outcomes</h3>
-          <p className="text-slate-600 leading-relaxed">KPIs, instrumentation, and user metrics
-            continuously inform design
-            decisions.</p>
-        </div>
 
-        {/*  Feature 5  */}
-        <div
-          className="group bg-white/80 backdrop-blur-sm border border-white/40 p-8 rounded-3xl premium-layered-shadow hover:-translate-y-1 transition-all duration-300">
-          <div
-            className="w-14 h-14 bg-orange-500/10 rounded-2xl flex items-center justify-center text-orange-600 mb-6 group-hover:scale-110 transition-transform duration-300">
-            <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M16 11a4 4 0 10-8 0" strokeWidth="2" />
-              <path d="M2 20a6 6 0 0112 0" strokeWidth="2" />
-            </svg>
+          <div className="group relative bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden p-6">
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-violet-400 to-purple-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="w-11 h-11 bg-violet-50 rounded-xl flex items-center justify-center text-violet-600 mb-5 group-hover:scale-110 transition-transform duration-300">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <rect x="3" y="3" width="7" height="7" rx="1.5" strokeWidth="2" />
+                <rect x="14" y="3" width="7" height="7" rx="1.5" strokeWidth="2" />
+                <rect x="3" y="14" width="7" height="7" rx="1.5" strokeWidth="2" />
+                <rect x="14" y="14" width="7" height="7" rx="1.5" strokeWidth="2" />
+              </svg>
+            </div>
+            <h3 className="text-base font-bold text-slate-900 mb-2">Product Engineering</h3>
+            <p className="text-slate-500 text-sm leading-relaxed">Buildable, observable, and cost-effective solutions engineered for real teams.</p>
           </div>
-          <h3 className="text-xl font-bold text-slate-900 mb-3">Collaborative Process</h3>
-          <p className="text-slate-600 leading-relaxed">Frequent demos, clear documentation and tight
-            alignment to reduce
-            surprises.</p>
-        </div>
 
-        {/*  Feature 6  */}
-        <div
-          className="group bg-white/80 backdrop-blur-sm border border-white/40 p-8 rounded-3xl premium-layered-shadow hover:-translate-y-1 transition-all duration-300">
-          <div
-            className="w-14 h-14 bg-pink-500/10 rounded-2xl flex items-center justify-center text-pink-500 mb-6 group-hover:scale-110 transition-transform duration-300">
-            <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M12 12a4 4 0 100-8 4 4 0 000 8z" strokeWidth="2" />
-              <path d="M3 20a9 9 0 0118 0" strokeWidth="2" />
-            </svg>
+          <div className="group relative bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden p-6">
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-amber-400 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="w-11 h-11 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600 mb-5 group-hover:scale-110 transition-transform duration-300">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M3 3v18h18" strokeWidth="2" />
+                <path d="M7 14v-4M12 14v-8M17 14v-2" strokeWidth="2" />
+              </svg>
+            </div>
+            <h3 className="text-base font-bold text-slate-900 mb-2">Data-Driven Outcomes</h3>
+            <p className="text-slate-500 text-sm leading-relaxed">KPIs, instrumentation, and user metrics continuously inform design decisions.</p>
           </div>
-          <h3 className="text-xl font-bold text-slate-900 mb-3">Peer & Team Mentoring</h3>
-          <p className="text-slate-600 leading-relaxed">Workshops and team coaching to lift the whole
-            squad’s technical
-            capabilities.</p>
+
+          <div className="group relative bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden p-6">
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-sky-400 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="w-11 h-11 bg-sky-50 rounded-xl flex items-center justify-center text-sky-600 mb-5 group-hover:scale-110 transition-transform duration-300">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+            <h3 className="text-base font-bold text-slate-900 mb-2">Collaborative Process</h3>
+            <p className="text-slate-500 text-sm leading-relaxed">Frequent demos, clear documentation, and tight alignment to reduce surprises.</p>
+          </div>
+
+          <div className="group relative bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden p-6">
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-rose-400 to-pink-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="w-11 h-11 bg-rose-50 rounded-xl flex items-center justify-center text-rose-500 mb-5 group-hover:scale-110 transition-transform duration-300">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 12a4 4 0 100-8 4 4 0 000 8z" strokeWidth="2" />
+                <path d="M3 20a9 9 0 0118 0" strokeWidth="2" />
+              </svg>
+            </div>
+            <h3 className="text-base font-bold text-slate-900 mb-2">Peer &amp; Team Mentoring</h3>
+            <p className="text-slate-500 text-sm leading-relaxed">Workshops and team coaching to lift the whole squad&apos;s technical capabilities.</p>
+          </div>
+
         </div>
       </div>
 
-      {/*  Process Steps (Centered)  */}
-      <div className="border-t border-slate-200 pt-6 mt-6 text-center">
-        <p className="text-sm font-semibold text-slate-500 uppercase tracking-widest mb-10">My
-          Development Methodology</p>
-        <div className="flex flex-wrap justify-center gap-8 md:gap-16">
-          <div className="group">
-            <div className="text-4xl font-black text-slate-200 group-hover:text-primary transition-colors duration-300">01
+      {/* Process Timeline Strip */}
+      <div className="border-t border-slate-100 pt-12">
+        <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-center mb-10">My Development Methodology</p>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
+          {([
+            { n: "01", label: "Discover",  color: "from-indigo-500 to-sky-500"    },
+            { n: "02", label: "Prototype", color: "from-violet-500 to-purple-500" },
+            { n: "03", label: "Validate",  color: "from-emerald-500 to-teal-500"  },
+            { n: "04", label: "Deliver",   color: "from-amber-500 to-orange-500"  },
+          ] as const).map((step, i) => (
+            <div key={i} className="group relative bg-white border border-slate-200/80 rounded-2xl p-6 hover:shadow-md hover:-translate-y-1 transition-all duration-300 text-center overflow-hidden">
+              <div className={`absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r ${step.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+              <div className={`text-5xl font-black bg-clip-text text-transparent bg-gradient-to-br ${step.color} mb-2 opacity-[0.15] group-hover:opacity-70 transition-opacity duration-300`}>
+                {step.n}
+              </div>
+              <div className="text-sm font-bold text-slate-900">{step.label}</div>
             </div>
-            <div className="text-lg font-bold text-slate-900 mt-2">Discover</div>
-          </div>
-          {/*  line  */}
-          <div className="hidden md:block w-12 h-0.5 bg-slate-200 self-center mt-2"></div>
-
-          <div className="group">
-            <div className="text-4xl font-black text-slate-200 group-hover:text-indigo-500 transition-colors duration-300">
-              02
-            </div>
-            <div className="text-lg font-bold text-slate-900 mt-2">Prototype</div>
-          </div>
-          {/*  line  */}
-          <div className="hidden md:block w-12 h-0.5 bg-slate-200 self-center mt-2"></div>
-
-          <div className="group">
-            <div className="text-4xl font-black text-slate-200 group-hover:text-purple-500 transition-colors duration-300">
-              03
-            </div>
-            <div className="text-lg font-bold text-slate-900 mt-2">Validate</div>
-          </div>
-          {/*  line  */}
-          <div className="hidden md:block w-12 h-0.5 bg-slate-200 self-center mt-2"></div>
-
-          <div className="group">
-            <div className="text-4xl font-black text-slate-200 group-hover:text-green-500 transition-colors duration-300">
-              04</div>
-            <div className="text-lg font-bold text-slate-900 mt-2">Deliver</div>
-          </div>
-        </div>
-
-        <div className="mt-6 flex justify-center gap-4">
-          <a href="#contact"
-            className="px-8 py-3.5 rounded-full bg-slate-900 text-white font-semibold shadow-lg hover:bg-primary hover:shadow-primary/30 hover:-translate-y-1 transition-all duration-300">Work
-            with me</a>
-          <a href="Resume_page.html?download=true"
-            className="px-8 py-3.5 rounded-full border border-slate-200 text-slate-700 font-medium hover:bg-slate-50 hover:border-slate-300 transition-all duration-300">Download
-            Resume</a>
+          ))}
         </div>
       </div>
+
     </div>
   </section>
 
+
+
   {/*  ─ Section Divider ─  */}
   <div className="section-divider" aria-hidden="true"><span className="divider-gem"></span></div>
+
+
+
+
 
 
 
