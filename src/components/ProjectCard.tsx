@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Project } from "@/data/portfolio";
 
 interface ProjectCardProps {
@@ -23,11 +23,128 @@ const LANGUAGE_COLORS: Record<string, string> = {
   Go: "#00ADD8",
 };
 
+// Post-process rendered README HTML:
+// 1. Render mermaid code blocks that GitHub may have left as <pre><code class="language-mermaid">
+// 2. Detect & inject Lucidchart / iframe embeds stripped by GitHub
+async function postProcessReadme(
+  container: HTMLElement,
+  rawMarkdown: string
+) {
+  // ── 1. Mermaid ────────────────────────────────────────────────────────────
+  const mermaidBlocks = container.querySelectorAll<HTMLElement>(
+    'pre code.language-mermaid, code.language-mermaid, pre.mermaid'
+  );
+
+  if (mermaidBlocks.length > 0) {
+    const mermaid = (await import("mermaid")).default;
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: "default",
+      securityLevel: "loose",
+      fontFamily: "Georgia, serif",
+    });
+
+    for (let i = 0; i < mermaidBlocks.length; i++) {
+      const block = mermaidBlocks[i];
+      const code = block.textContent || "";
+      const id = `mermaid-preview-${Date.now()}-${i}`;
+
+      try {
+        const { svg } = await mermaid.render(id, code);
+        const wrapper = document.createElement("div");
+        wrapper.className =
+          "my-4 p-4 bg-white border border-slate-200 rounded-xl overflow-x-auto shadow-sm";
+        wrapper.innerHTML = svg;
+        const pre = block.closest("pre") || block;
+        pre.replaceWith(wrapper);
+      } catch (err) {
+        console.warn("Mermaid render error:", err);
+      }
+    }
+  }
+
+  // ── 2. Lucidchart / embed iframes stripped by GitHub ─────────────────────
+  const lucidchart_regex =
+    /https:\/\/(lucid\.app|app\.lucidchart\.com|www\.lucidchart\.com)\/[^\s'")\]]+/g;
+  const lucidMatches = [...rawMarkdown.matchAll(lucidchart_regex)];
+
+  if (lucidMatches.length > 0) {
+    const iframeSection = document.createElement("div");
+    iframeSection.className = "mt-6 space-y-4";
+    const heading = document.createElement("h4");
+    heading.className = "text-sm font-bold text-slate-500 uppercase tracking-widest mb-3";
+    heading.textContent = "📊 Lucidchart Diagrams";
+    iframeSection.appendChild(heading);
+
+    const seen = new Set<string>();
+    for (const match of lucidMatches) {
+      const url = match[0].split(/['")\]]/)[0]; // trim any trailing chars
+      if (seen.has(url)) continue;
+      seen.add(url);
+
+      // Convert view URL to embed URL for lucidchart
+      let embedUrl = url;
+      if (url.includes("lucidchart.com") && !url.includes("/embedded/")) {
+        embedUrl = url.replace("/documents/view/", "/documents/embeddedchart/")
+                      .replace("/documents/edit/", "/documents/embeddedchart/");
+      }
+
+      const iframeWrap = document.createElement("div");
+      iframeWrap.className = "rounded-xl overflow-hidden border border-slate-200 shadow-sm";
+      const iframe = document.createElement("iframe");
+      iframe.src = embedUrl;
+      iframe.width = "100%";
+      iframe.height = "480";
+      iframe.style.border = "none";
+      iframe.title = "Lucidchart Diagram";
+      iframe.allowFullscreen = true;
+      iframeWrap.appendChild(iframe);
+      iframeSection.appendChild(iframeWrap);
+    }
+    container.appendChild(iframeSection);
+  }
+
+  // ── 3. Generic iframes (e.g. custom flowchart embeds) ────────────────────
+  const iframeTagRegex = /<iframe[^>]+src=["']([^"']+)["'][^>]*>/g;
+  const iframeMatches = [...rawMarkdown.matchAll(iframeTagRegex)];
+
+  if (iframeMatches.length > 0) {
+    const iframeSection2 = document.createElement("div");
+    iframeSection2.className = "mt-6 space-y-4";
+    const heading2 = document.createElement("h4");
+    heading2.className = "text-sm font-bold text-slate-500 uppercase tracking-widest mb-3";
+    heading2.textContent = "🔗 Embedded Diagrams";
+    iframeSection2.appendChild(heading2);
+
+    const seen2 = new Set<string>();
+    for (const match of iframeMatches) {
+      const src = match[1];
+      if (seen2.has(src)) continue;
+      seen2.add(src);
+
+      const iframeWrap2 = document.createElement("div");
+      iframeWrap2.className = "rounded-xl overflow-hidden border border-slate-200 shadow-sm";
+      const iframe2 = document.createElement("iframe");
+      iframe2.src = src;
+      iframe2.width = "100%";
+      iframe2.height = "480";
+      iframe2.style.border = "none";
+      iframe2.title = "Embedded Diagram";
+      iframe2.allowFullscreen = true;
+      iframeWrap2.appendChild(iframe2);
+      iframeSection2.appendChild(iframeWrap2);
+    }
+    container.appendChild(iframeSection2);
+  }
+}
+
 export default function ProjectCard({ project, index }: ProjectCardProps) {
   const [open, setOpen] = useState(false);
   const [readme, setReadme] = useState<string | null>(null);
+  const [rawReadme, setRawReadme] = useState<string>("");
   const [readmeLoading, setReadmeLoading] = useState(false);
   const [readmeError, setReadmeError] = useState(false);
+  const readmeRef = useRef<HTMLDivElement>(null);
 
   const langColor = project.language ? (LANGUAGE_COLORS[project.language] ?? "#64748b") : "#64748b";
 
@@ -36,14 +153,25 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
     setReadmeLoading(true);
     setReadmeError(false);
     try {
-      // Use GitHub API to get rendered HTML of README
-      const res = await fetch(
-        `https://api.github.com/repos/RishvinReddy/${project.repoName}/readme`,
-        { headers: { Accept: "application/vnd.github.html" } }
-      );
-      if (!res.ok) throw new Error("No README");
-      const html = await res.text();
+      // Fetch both rendered HTML and raw markdown in parallel
+      const [htmlRes, rawRes] = await Promise.all([
+        fetch(
+          `https://api.github.com/repos/RishvinReddy/${project.repoName}/readme`,
+          { headers: { Accept: "application/vnd.github.html" } }
+        ),
+        fetch(
+          `https://api.github.com/repos/RishvinReddy/${project.repoName}/readme`,
+          { headers: { Accept: "application/vnd.github.raw" } }
+        ),
+      ]);
+
+      if (!htmlRes.ok) throw new Error("No README");
+
+      const html = await htmlRes.text();
+      const raw = rawRes.ok ? await rawRes.text() : "";
+
       setReadme(html);
+      setRawReadme(raw);
     } catch {
       setReadmeError(true);
     } finally {
@@ -51,13 +179,21 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
     }
   }, [project.repoName]);
 
+  // Fetch README when modal opens
   useEffect(() => {
     if (open && readme === null && !readmeLoading) {
       fetchReadme();
     }
   }, [open, readme, readmeLoading, fetchReadme]);
 
-  // Close on Escape key
+  // Post-process: render Mermaid + inject Lucidchart iframes
+  useEffect(() => {
+    if (!readme || !readmeRef.current) return;
+    const container = readmeRef.current;
+    postProcessReadme(container, rawReadme);
+  }, [readme, rawReadme]);
+
+  // Close on Escape
   useEffect(() => {
     if (!open) return;
     const handler = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
@@ -65,13 +201,9 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
     return () => window.removeEventListener("keydown", handler);
   }, [open]);
 
-  // Prevent body scroll when modal is open
+  // Lock body scroll
   useEffect(() => {
-    if (open) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = open ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
@@ -178,10 +310,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
           aria-label={`${project.title} preview`}
         >
           {/* Backdrop */}
-          <div
-            className="absolute inset-0 bg-slate-900/70 backdrop-blur-sm"
-            onClick={() => setOpen(false)}
-          />
+          <div className="absolute inset-0 bg-slate-900/70 backdrop-blur-sm" onClick={() => setOpen(false)} />
 
           {/* Panel */}
           <div className="relative z-10 w-full max-w-5xl max-h-[92vh] flex flex-col bg-white rounded-3xl shadow-2xl overflow-hidden mt-4">
@@ -201,13 +330,9 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
               </div>
               <div className="flex items-center gap-2 shrink-0">
                 {project.repoUrl && (
-                  <a
-                    href={project.repoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <a href={project.repoUrl} target="_blank" rel="noopener noreferrer"
                     className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-sm font-semibold rounded-full transition-colors"
-                    onClick={(e) => e.stopPropagation()}
-                  >
+                    onClick={(e) => e.stopPropagation()}>
                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
                     </svg>
@@ -215,24 +340,18 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
                   </a>
                 )}
                 {project.liveUrl && (
-                  <a
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
                     className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-white text-sm font-semibold rounded-full transition-colors"
-                    onClick={(e) => e.stopPropagation()}
-                  >
+                    onClick={(e) => e.stopPropagation()}>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                     </svg>
                     Live Demo
                   </a>
                 )}
-                <button
-                  onClick={() => setOpen(false)}
+                <button onClick={() => setOpen(false)}
                   className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
-                  aria-label="Close preview"
-                >
+                  aria-label="Close">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                   </svg>
@@ -243,9 +362,8 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
             {/* Scrollable content */}
             <div className="flex-1 overflow-y-auto">
 
-              {/* Meta info strip */}
+              {/* Meta strip */}
               <div className="px-6 sm:px-8 py-4 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center gap-x-6 gap-y-3">
-                {/* Stats */}
                 <span className="flex items-center gap-1.5 text-sm text-slate-600">
                   <svg className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
@@ -271,7 +389,6 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
                     {project.language}
                   </span>
                 )}
-                {/* Tags */}
                 <div className="flex flex-wrap gap-1.5 ml-auto">
                   {project.tags.map((tag, i) => (
                     <span key={i} className="px-2.5 py-1 rounded-full bg-slate-200 text-slate-700 text-[10px] font-bold uppercase tracking-wider">
@@ -296,12 +413,12 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
                 </h3>
 
                 {readmeLoading && (
-                  <div className="flex items-center gap-3 text-slate-500 py-8 justify-center">
+                  <div className="flex items-center gap-3 text-slate-500 py-12 justify-center">
                     <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                     </svg>
-                    <span className="text-sm">Loading README...</span>
+                    <span className="text-sm">Loading README, diagrams & charts...</span>
                   </div>
                 )}
 
@@ -321,6 +438,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
 
                 {readme && !readmeLoading && (
                   <div
+                    ref={readmeRef}
                     className="prose prose-slate max-w-none
                       prose-headings:font-bold prose-headings:text-slate-900 prose-headings:tracking-tight
                       prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl
@@ -329,7 +447,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
                       prose-code:text-sm prose-code:bg-slate-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-mono prose-code:text-slate-800 prose-code:before:content-none prose-code:after:content-none
                       prose-pre:bg-[#0d1117] prose-pre:text-slate-100 prose-pre:rounded-xl prose-pre:border prose-pre:border-slate-800 prose-pre:text-sm
                       prose-blockquote:border-l-4 prose-blockquote:border-slate-300 prose-blockquote:text-slate-600 prose-blockquote:italic
-                      prose-img:rounded-xl prose-img:shadow-md prose-img:border prose-img:border-slate-200
+                      prose-img:rounded-xl prose-img:shadow-md prose-img:border prose-img:border-slate-200 prose-img:max-w-full
                       prose-table:text-sm prose-th:bg-slate-100 prose-th:font-bold
                       prose-li:text-slate-700 prose-p:text-slate-700 prose-p:leading-relaxed"
                     dangerouslySetInnerHTML={{ __html: readme }}
@@ -338,28 +456,22 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
               </div>
             </div>
 
-            {/* Modal Footer */}
+            {/* Footer */}
             <div className="shrink-0 px-6 sm:px-8 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
               <span className="text-xs text-slate-400 font-mono">github.com/RishvinReddy/{project.repoName}</span>
               <div className="flex gap-2">
                 {project.repoUrl && (
-                  <a
-                    href={project.repoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <a href={project.repoUrl} target="_blank" rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-900 text-white text-xs font-bold rounded-full hover:bg-slate-700 transition-colors"
-                    onClick={(e) => e.stopPropagation()}
-                  >
+                    onClick={(e) => e.stopPropagation()}>
                     <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
                     </svg>
                     Open on GitHub
                   </a>
                 )}
-                <button
-                  onClick={() => setOpen(false)}
-                  className="px-4 py-2 border border-slate-200 text-slate-600 text-xs font-semibold rounded-full hover:bg-slate-100 transition-colors"
-                >
+                <button onClick={() => setOpen(false)}
+                  className="px-4 py-2 border border-slate-200 text-slate-600 text-xs font-semibold rounded-full hover:bg-slate-100 transition-colors">
                   Close
                 </button>
               </div>
