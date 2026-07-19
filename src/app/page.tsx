@@ -210,8 +210,9 @@ export default async function Home() {
             </div>
 
             {/* Clean Editorial Portrait Oval */}
-            <div className="relative z-10 w-full max-w-[350px] sm:max-w-[450px] lg:max-w-[500px] xl:max-w-[560px] aspect-square rounded-full overflow-hidden border-2 border-slate-200/60 shadow-xl bg-white group cursor-pointer" id="profileThumb" data-src="icon.png">
+            <div className="relative z-10 w-full max-w-[400px] sm:max-w-[500px] lg:max-w-[580px] xl:max-w-[650px] aspect-square rounded-full overflow-hidden border-2 border-slate-200/60 shadow-xl bg-white group cursor-pointer" id="profileThumb" data-src="icon.png">
               <img loading="lazy" src="icon.png" className="w-full h-full object-cover mix-blend-multiply scale-[1.02] group-hover:scale-[1.05] transition-transform duration-700 ease-out" alt="Erolla Rishvin Reddy Software Developer and IoT Engineer" />
+
               
               {/* Refined Hover Overlay */}
               <div className="absolute inset-0 bg-slate-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
