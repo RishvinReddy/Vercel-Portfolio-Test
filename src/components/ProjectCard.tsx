@@ -23,47 +23,118 @@ const LANGUAGE_COLORS: Record<string, string> = {
   Go: "#00ADD8",
 };
 
+// Known mermaid diagram type keywords
+const MERMAID_TYPES = [
+  "graph", "flowchart", "sequenceDiagram", "classDiagram", "stateDiagram",
+  "stateDiagram-v2", "erDiagram", "gantt", "pie", "gitGraph", "journey",
+  "quadrantChart", "requirementDiagram", "mindmap", "timeline", "xychart-beta",
+  "block-beta",
+];
+
+/** Parse raw markdown for ```mermaid ... ``` fenced blocks. */
+function extractMermaidBlocks(raw: string): string[] {
+  const blocks: string[] = [];
+  const fence = /```mermaid([\s\S]*?)```/gi;
+  let m: RegExpExecArray | null;
+  while ((m = fence.exec(raw)) !== null) {
+    const code = m[1].trim();
+    if (code) blocks.push(code);
+  }
+  return blocks;
+}
+
 // Post-process rendered README HTML:
-// 1. Render mermaid code blocks that GitHub may have left as <pre><code class="language-mermaid">
+// 1. Render ALL mermaid blocks from raw markdown (reliable: covers graph LR, sequenceDiagram, etc.)
 // 2. Detect & inject Lucidchart / iframe embeds stripped by GitHub
 async function postProcessReadme(
   container: HTMLElement,
   rawMarkdown: string
 ) {
-  // ── 1. Mermaid ────────────────────────────────────────────────────────────
-  const mermaidBlocks = container.querySelectorAll<HTMLElement>(
-    'pre code.language-mermaid, code.language-mermaid, pre.mermaid'
+  // ── 1. Mermaid — use raw markdown as primary source of truth ─────────────
+  // a) DOM-detected blocks (GitHub may render as <pre class="mermaid"> etc)
+  const domMermaidBlocks = Array.from(
+    container.querySelectorAll<HTMLElement>(
+      'pre code.language-mermaid, code.language-mermaid, pre.mermaid, .highlight-source-mermaid pre'
+    )
   );
 
-  if (mermaidBlocks.length > 0) {
+  // b) Any <pre> whose text starts with a known mermaid keyword
+  const allPres = Array.from(container.querySelectorAll<HTMLElement>('pre'));
+  const keywordBlocks = allPres.filter(pre => {
+    const text = (pre.textContent || "").trimStart();
+    return MERMAID_TYPES.some(t => text.startsWith(t));
+  });
+
+  const domBlockSet = new Set<HTMLElement>([...domMermaidBlocks, ...keywordBlocks]);
+
+  // c) Raw markdown extraction (catches everything GitHub didn't render)
+  const rawBlocks = extractMermaidBlocks(rawMarkdown);
+
+  const hasMermaid = domBlockSet.size > 0 || rawBlocks.length > 0;
+
+  if (hasMermaid) {
     const mermaid = (await import("mermaid")).default;
     mermaid.initialize({
       startOnLoad: false,
       theme: "default",
       securityLevel: "loose",
       fontFamily: "Georgia, serif",
+      flowchart: { useMaxWidth: true, htmlLabels: true },
     });
 
-    for (let i = 0; i < mermaidBlocks.length; i++) {
-      const block = mermaidBlocks[i];
-      const code = block.textContent || "";
-      const id = `mermaid-preview-${Date.now()}-${i}`;
+    let idx = 0;
 
+    // Render DOM-found blocks in-place
+    for (const block of domBlockSet) {
+      const code = (block.textContent || "").trim();
+      if (!code) continue;
+      const id = `mmd-dom-${Date.now()}-${idx++}`;
       try {
         const { svg } = await mermaid.render(id, code);
         const wrapper = document.createElement("div");
-        wrapper.className =
-          "my-4 p-4 bg-white border border-slate-200 rounded-xl overflow-x-auto shadow-sm";
+        wrapper.className = "my-5 p-4 bg-white border border-slate-200 rounded-xl overflow-x-auto shadow-sm mermaid-rendered";
         wrapper.innerHTML = svg;
-        const pre = block.closest("pre") || block;
-        pre.replaceWith(wrapper);
+        const toReplace = block.closest("pre") || block;
+        toReplace.replaceWith(wrapper);
       } catch (err) {
-        console.warn("Mermaid render error:", err);
+        console.warn("Mermaid DOM render error:", err);
       }
+    }
+
+    // Render raw-markdown blocks not already in DOM
+    const alreadyRendered = container.querySelectorAll(".mermaid-rendered").length;
+    const remaining = rawBlocks.slice(alreadyRendered);
+
+    if (remaining.length > 0) {
+      const section = document.createElement("div");
+      section.className = "mt-6 space-y-5";
+      const sectionHeading = document.createElement("h4");
+      sectionHeading.className = "text-sm font-bold text-slate-500 uppercase tracking-widest mb-3";
+      sectionHeading.textContent = "📈 Diagrams & Charts";
+      section.appendChild(sectionHeading);
+
+      for (const code of remaining) {
+        const id = `mmd-raw-${Date.now()}-${idx++}`;
+        try {
+          const { svg } = await mermaid.render(id, code);
+          const wrapper = document.createElement("div");
+          wrapper.className = "p-4 bg-white border border-slate-200 rounded-xl overflow-x-auto shadow-sm";
+          wrapper.innerHTML = svg;
+          section.appendChild(wrapper);
+        } catch (err) {
+          const fallback = document.createElement("pre");
+          fallback.className = "bg-slate-900 text-slate-100 p-4 rounded-xl text-sm overflow-x-auto";
+          fallback.textContent = code;
+          section.appendChild(fallback);
+          console.warn("Mermaid raw render error:", err);
+        }
+      }
+      container.appendChild(section);
     }
   }
 
   // ── 2. Lucidchart / embed iframes stripped by GitHub ─────────────────────
+
   const lucidchart_regex =
     /https:\/\/(lucid\.app|app\.lucidchart\.com|www\.lucidchart\.com)\/[^\s'")\]]+/g;
   const lucidMatches = [...rawMarkdown.matchAll(lucidchart_regex)];
@@ -287,17 +358,34 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
         </div>
 
         {/* Footer */}
-        <div className="px-5 py-3 border-t border-slate-100 bg-slate-50 flex items-center justify-between">
-          <span className="text-[11px] text-slate-400 font-mono truncate max-w-[160px]">
+        <div className="px-5 py-3 border-t border-slate-100 bg-slate-50 flex items-center justify-between gap-2">
+          <span className="text-[11px] text-slate-400 font-mono truncate max-w-[120px]">
             {project.repoName || project.title}
           </span>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 text-white text-[11px] font-bold rounded-full group-hover:bg-slate-700 transition-colors">
-            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-            </svg>
-            Preview
-          </span>
+          <div className="flex items-center gap-2 shrink-0">
+            {project.liveUrl && (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500 text-white text-[11px] font-bold rounded-full hover:bg-emerald-400 transition-colors"
+                onClick={(e) => e.stopPropagation()}
+                aria-label="Launch live demo"
+              >
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+                Launch Live
+              </a>
+            )}
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 text-white text-[11px] font-bold rounded-full group-hover:bg-slate-700 transition-colors">
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+              Preview
+            </span>
+          </div>
         </div>
       </div>
 
