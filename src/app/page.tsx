@@ -1024,7 +1024,7 @@ export default async function Home() {
 
             {/*  Actions  */}
             <div className="flex flex-wrap items-center gap-3">
-              <a href="assets/certificates/CERTIFICATE.pdf#toolbar=0" target="_blank"
+              <a href="/assets/certificates/CERTIFICATE.pdf#toolbar=0" target="_blank"
                 className="group/btn relative inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-2xl text-sm font-black text-white overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-amber-500/30 active:scale-95 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2">
                 <div className="absolute inset-0 bg-gradient-to-r from-amber-500 to-orange-500"></div>
                 <div
@@ -1041,7 +1041,7 @@ export default async function Home() {
                 <span className="relative z-10">View Patent</span>
               </a>
 
-              <a href="assets/certificates/CERTIFICATE.pdf" target="_blank"
+              <a href="/assets/certificates/CERTIFICATE.pdf" target="_blank"
                 className="group/pdf inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-2xl text-sm font-black text-slate-600 bg-white border-2 border-slate-200 hover:border-amber-300/80 hover:bg-amber-50/60 hover:text-amber-700 hover:shadow-lg hover:shadow-amber-100 hover:-translate-y-1 transition-all duration-300 active:scale-95 focus:outline-none focus:ring-2 focus:ring-amber-200 focus:ring-offset-2">
                 <svg className="w-4 h-4 transition-transform duration-300 group-hover/pdf:-translate-y-0.5" fill="none"
                   stroke="currentColor" viewBox="0 0 24 24">
