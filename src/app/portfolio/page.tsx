@@ -225,31 +225,88 @@ export default async function Portfolio() {
             </div>
 
             {/*  Dynamic grid populated by JS  */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {projects.map((project, index) => (
-              <div key={index} className="group flex flex-col bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2">
-                <div className="relative h-48 bg-slate-100 overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-slate-200 to-slate-100 group-hover:scale-105 transition-transform duration-700"></div>
-                  <div className="absolute top-4 right-4 flex gap-2">
-                    {project.repoUrl && (
-                      <a href={project.repoUrl} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/90 backdrop-blur shadow-sm flex items-center justify-center text-slate-700 hover:text-primary hover:scale-110 transition-all">
-                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-                      </a>
+              <a
+                key={index}
+                href={project.repoUrl || '#'}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col bg-white rounded-2xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+              >
+                {/* GitHub-style dark card header */}
+                <div className="bg-[#0d1117] px-5 py-4 flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-slate-400 text-xs font-mono mb-0.5">RishvinReddy/</p>
+                    <p className="text-white font-bold text-lg leading-tight truncate font-mono">{project.repoName || project.title}</p>
+                  </div>
+                  <img
+                    src={project.ownerAvatar || 'https://github.com/RishvinReddy.png'}
+                    alt="Rishvin Reddy"
+                    className="w-10 h-10 rounded-full border-2 border-slate-700 flex-shrink-0 mt-0.5"
+                  />
+                </div>
+
+                {/* Description */}
+                <div className="px-5 py-4 flex-1 flex flex-col">
+                  <p className="text-slate-600 text-sm leading-relaxed mb-4 flex-grow line-clamp-3">{project.description}</p>
+
+                  {/* Stats Row */}
+                  <div className="flex items-center gap-4 text-xs text-slate-500 mb-4">
+                    <span className="flex items-center gap-1.5">
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                      {project.contributors ?? 1}
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="4" strokeWidth="2"/>
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v.01M12 16v.01" />
+                      </svg>
+                      {project.openIssues ?? 0}
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                      </svg>
+                      {project.stars ?? 0}
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                      </svg>
+                      {project.forks ?? 0}
+                    </span>
+                  </div>
+
+                  {/* Tags + Language Row */}
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex flex-wrap gap-1.5">
+                      {project.tags.slice(0, 2).map((tag, i) => (
+                        <span key={i} className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-bold uppercase tracking-wider">{tag}</span>
+                      ))}
+                    </div>
+                    {project.language && (
+                      <span className="flex items-center gap-1 text-[10px] font-bold text-slate-500 bg-slate-50 border border-slate-200 px-2 py-0.5 rounded-full shrink-0">
+                        <span className="w-2 h-2 rounded-full bg-slate-400 inline-block"></span>
+                        {project.language}
+                      </span>
                     )}
                   </div>
                 </div>
-                
-                <div className="p-6 sm:p-8 flex-1 flex flex-col">
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.tags.map((tag, i) => (
-                      <span key={i} className="px-2.5 py-1 rounded-md bg-slate-100 text-slate-600 text-[10px] font-bold uppercase tracking-wider">{tag}</span>
-                    ))}
-                  </div>
-                  
-                  <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-primary transition-colors">{project.title}</h3>
-                  <p className="text-slate-500 text-sm leading-relaxed mb-6 flex-grow">{project.description}</p>
+
+                {/* Launch App Footer */}
+                <div className="px-5 py-3 border-t border-slate-100 bg-slate-50 flex items-center justify-between">
+                  <span className="text-[11px] text-slate-400 font-mono">{project.repoName || project.title}</span>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 text-white text-[11px] font-bold rounded-full group-hover:bg-slate-700 transition-colors">
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                    Launch App
+                  </span>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
 

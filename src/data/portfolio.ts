@@ -42,6 +42,13 @@ export interface Project {
   repoUrl: string;
   liveUrl?: string;
   image?: string;
+  stars?: number;
+  forks?: number;
+  language?: string;
+  openIssues?: number;
+  repoName?: string;
+  ownerAvatar?: string;
+  contributors?: number;
 }
 
 // ----------------------------------------------------------------------

@@ -76,6 +76,13 @@ export async function getGithubProjects(): Promise<Project[]> {
           tags: Array.from(new Set(tags)),
           repoUrl: repo.html_url,
           liveUrl: repo.homepage || undefined,
+          stars: repo.stargazers_count || 0,
+          forks: repo.forks_count || 0,
+          language: repo.language || undefined,
+          openIssues: repo.open_issues_count || 0,
+          repoName: repo.name || '',
+          ownerAvatar: repo.owner?.avatar_url || `https://github.com/${USERNAME}.png`,
+          contributors: 1,
         };
       });
 
