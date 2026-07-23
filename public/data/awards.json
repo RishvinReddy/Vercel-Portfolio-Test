@@ -1,0 +1,39 @@
+{
+  "awards": [
+    {
+      "title": "Best Project Ideas & Problem-Solving Award",
+      "organization": "Woxsen University",
+      "year": "2024",
+      "description": "Recognized by the School of Technology at Woxsen University for outstanding performance in innovation, conceptual clarity, and problem-solving across multiple academic projects.",
+      "image": "https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?auto=format&fit=crop&q=80&w=800",
+      "iconType": "Trophy",
+      "link": "/certificates/best-project.pdf"
+    },
+    {
+      "title": "Academic Excellence Recognition",
+      "organization": "Woxsen University",
+      "year": "2023",
+      "description": "Honored for consistent academic performance and contributions to innovative coursework within Computer Science Engineering (IoT, Blockchain & Cyber Security specialisation).",
+      "image": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=800",
+      "iconType": "Star",
+      "link": "/certificates/academic-excellence.pdf"
+    }
+  ],
+  "timeline": [
+    {
+      "year": "2024",
+      "title": "Best Project Ideas & Problem-Solving",
+      "org": "Awarded by School of Technology, Woxsen University."
+    },
+    {
+      "year": "2023",
+      "title": "Academic Excellence Recognition",
+      "org": "Computer Science Engineering specialisation."
+    },
+    {
+      "year": "2023",
+      "title": "Government of India Design Patent Granted",
+      "org": "Co-inventor of IoT Connectivity Device."
+    }
+  ]
+}

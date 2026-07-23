@@ -4,7 +4,7 @@ import { getGithubProjects, getRawGithubRepos } from '@/lib/github';
 import { TECH_STACK, SERVICES, FEATURED_PROJECTS } from '../data/portfolio';
 import React from 'react';
 import ProfileModalController from '@/components/ProfileModalController';
-import { VideoIntro } from "@/components/VideoIntro";
+import { CodedIntro } from "@/components/CodedIntro";
 
 export default async function Home() {
   const dynamicProjects = await getGithubProjects();
@@ -32,7 +32,7 @@ export default async function Home() {
 
   return (
     <>
-      <VideoIntro />
+      <CodedIntro />
       <ProfileModalController />
       {/*  ── Header v2 Scripts ──  */}
 
@@ -288,7 +288,7 @@ export default async function Home() {
      ===========================  */}
 
       <section id="about-v3" className="py-12 sm:py-20 bg-white relative z-0">
-        <div className="mx-auto max-w-screen-xl px-6 lg:px-10 relative z-10">
+        <div className="mx-auto max-w-screen-2xl px-6 lg:px-10 relative z-10">
 
           {/* ── Section Header ── */}
           <div className="max-w-5xl mx-auto text-center mb-16">
@@ -880,7 +880,7 @@ export default async function Home() {
           <div className="absolute inset-0 bg-[url(&apos;data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wMykiLz48L3N2Zz4=&apos;)] opacity-20 mask-image:linear-gradient(to_bottom,white,transparent)"></div>
         </div>
 
-        <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 max-w-screen-2xl">
           {/*  Header  */}
           <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-24">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-primary font-bold text-sm tracking-wide mb-6 shadow-inner backdrop-blur-md">
@@ -940,7 +940,7 @@ export default async function Home() {
       <section className="py-24 sm:py-32 bg-[#F8FAFC] relative overflow-hidden" id="projects">
         {/*  Dynamic Background Elements  */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-screen-2xl">
             <div
               className="absolute top-0 left-0 w-[800px] h-[800px] bg-slate-200/50 rounded-full blur-[120px] mix-blend-multiply opacity-50">
             </div>
@@ -1036,7 +1036,7 @@ export default async function Home() {
             </p>
           </div>
 
-          <div className="max-w-7xl mx-auto scroll-reveal delay-2">
+          <div className="max-w-screen-2xl mx-auto scroll-reveal delay-2">
 
             <KnowledgeGraph repos={rawRepos} />
 
@@ -1148,7 +1148,7 @@ export default async function Home() {
         {/* Subtle top border accent */}
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
 
-        <div className="mx-auto max-w-screen-xl px-6 lg:px-12 relative z-10">
+        <div className="mx-auto max-w-screen-2xl px-6 lg:px-12 relative z-10">
 
           {/* Two-Column Header */}
           <div className="grid lg:grid-cols-[1fr_1.8fr] gap-16 items-start mb-20">

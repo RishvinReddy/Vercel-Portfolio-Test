@@ -1,0 +1,36 @@
+{
+  "languages": [
+    { "name": "Python", "level": 90, "color": "bg-blue-500" },
+    { "name": "TypeScript/JS", "level": 85, "color": "bg-yellow-400" },
+    { "name": "C/C++", "level": 80, "color": "bg-purple-500" },
+    { "name": "Java", "level": 75, "color": "bg-red-500" },
+    { "name": "HTML/CSS", "level": 95, "color": "bg-orange-500" },
+    { "name": "SQL", "level": 85, "color": "bg-emerald-500" }
+  ],
+  "categories": [
+    {
+      "title": "Frontend & UI",
+      "iconType": "Layout",
+      "iconColor": "text-pink-500",
+      "skills": ["React", "Next.js", "Tailwind CSS", "Framer Motion", "UI/UX Design"]
+    },
+    {
+      "title": "Backend & Cloud",
+      "iconType": "Database",
+      "iconColor": "text-emerald-500",
+      "skills": ["Node.js", "Express", "REST APIs", "PostgreSQL", "Firebase"]
+    },
+    {
+      "title": "IoT & Embedded",
+      "iconType": "Cpu",
+      "iconColor": "text-yellow-500",
+      "skills": ["Arduino", "ESP32", "Sensors", "Embedded C", "Hardware Design"]
+    },
+    {
+      "title": "Security & Blockchain",
+      "iconType": "Shield",
+      "iconColor": "text-blue-500",
+      "skills": ["Threat Modeling", "Web3", "Smart Contracts", "Cryptography", "Network Security"]
+    }
+  ]
+}

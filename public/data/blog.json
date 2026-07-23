@@ -1,0 +1,38 @@
+[
+  {
+    "id": "future-of-ux-2024",
+    "title": "The Future of UX: Trends to Watch in 2024",
+    "description": "Practical predictions and design patterns I expect will shape product thinking next year — micro-interactions, privacy-first UX, AI-assisted flows and more.",
+    "date": "Nov 11, 2025",
+    "readTime": "6 min read",
+    "author": "Rishvin Reddy",
+    "authorImage": "/icon.png",
+    "image": "https://images.unsplash.com/photo-1526378721752-2d31f0b6b6d7?q=80&w=1600&auto=format&fit=crop&crop=faces",
+    "tags": ["UX", "Trends"],
+    "link": "/blog/future-of-ux-2024"
+  },
+  {
+    "id": "design-thinking-guide",
+    "title": "Design Thinking: A Practical Guide",
+    "description": "A step-by-step walkthrough of discovery, ideation and validation — how I run workshops, rapid prototypes and measure outcomes.",
+    "date": "Oct 2, 2025",
+    "readTime": "8 min read",
+    "author": "Rishvin Reddy",
+    "authorImage": "/icon.png",
+    "image": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1600&auto=format&fit=crop",
+    "tags": ["Process", "UX"],
+    "link": "/blog/design-thinking-guide"
+  },
+  {
+    "id": "mobile-redesign-case-study",
+    "title": "Case Study: Mobile App Redesign",
+    "description": "End-to-end redesign of a banking mobile app — discovery, accessibility improvements and measurable uplift in task success.",
+    "date": "Aug 14, 2025",
+    "readTime": "10 min read",
+    "author": "Rishvin Reddy",
+    "authorImage": "/icon.png",
+    "image": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1600&auto=format&fit=crop",
+    "tags": ["Mobile", "Case Study"],
+    "link": "/blog/mobile-redesign-case-study"
+  }
+]
